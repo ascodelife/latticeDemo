@@ -1,13 +1,237 @@
+/* init */
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-size: 1.6rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#root {
+  height: 100%;
 }
+
+a {
+  text-decoration: none;
+}
+
+.point {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.solid {
+  border: 0.1rem solid red;
+}
+.padding{
+  padding: .5rem;
+}
+.full-width {
+  width: 100%;
+}
+
+/*App  */
+
+.grid-container {
+  height: 100%;
+  display: grid;
+  grid-template-areas: "header header" "aside main" "footer footer";
+  grid-template-columns: 40rem 1fr;
+  grid-template-rows: 4rem 1fr 4rem;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.header {
+  grid-area: header;
+}
+
+.header .flex-contain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.1rem solid;
+}
+
+.aside {
+  grid-area: aside;
+  border: 0.1rem solid;
+}
+
+.main {
+  grid-area: main;
+  border: 0.1rem solid;
+}
+
+.footer {
+  grid-area: footer;
+  border: 0.1rem solid;
+  text-align: center;
+}
+
+/* TagSidebar */
+.tagSidebar{
+  height: 90%;
+}
+
+.tagSidebar .grid-container {
+  display: grid;
+  grid-template-areas: "view" "action";
+  grid-template-rows:1fr 2rem ;
+  grid-template-columns: 100%;
+  height: 100%;
+}
+.tagSidebar .carousel{
+  grid-area:view;
+}
+
+.tagSidebar .action {
+  grid-area:action;
+  text-align: center;
+}
+.tagSidebar span{
+  margin: .1rem;
+}
+
+.tagSidebar .highlight{
+  color: rgb(55, 145, 255);
+  font-size: 110%;
+  font-weight: bolder;
+}
+
+/* HomeScreen */
+
+.flex-contain {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* FileBar */
+
+.fileBar .flex-contain {
+  /* max-height: 2000rem;
+    transition: all 0.5s; */
+}
+
+.fileBar .flex-contain.hidden {
+  /* max-height: 0;
+    overflow: hidden;
+    transition: all 0.5s; */
+  display: none;
+}
+
+/* SplitBar */
+
+.splitBar .flex-contain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+}
+
+.splitBar .flex-contain:hover {
+  background-color: rgb(229, 243, 255);
+}
+
+.splitBar .arrow {
+}
+
+.splitBar .info {
+  margin: 0 0.5rem;
+  color: rgb(55, 145, 255);
+  font-weight: bold;
+}
+
+.splitBar .line {
+  flex: 1 1 10rem;
+  border: 0.1rem solid rgb(206, 218, 229);
+}
+
+/* File */
+
+.file {
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.file:hover {
+  background-color: rgb(229, 243, 255);
+}
+
+.file:focus {
+  background-color: rgb(204, 232, 255);
+}
+
+.file .file-image {
+  max-height: 7rem;
+  max-width: 7rem;
+}
+
+.file .file-name {
+  text-align: center;
+}
+
+/* controlSidebar */
+
+.controlSidebar .carousel {
+  margin-top: 2rem;
+  text-align: center;
+  height: 40rem;
+  background: rgb(231, 230, 230);
+  overflow: hidden;
+}
+
+/* .controlSidebar {
+    position: fixed;
+    border: .1rem solid;
+    width: 40rem;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: white;
+    transform: translateX(40rem);
+    transition: transform .5s;
+}
+
+.controlSidebar.show {
+    transform: translateX(0);
+    transition: transform .5s;
+}
+
+.controlSidebar .btn-closed {
+    cursor: pointer;
+    border: none;
+    font-size: 4rem;
+    border-radius: 100%;
+} */
+
+/* TagList */
+
+.tagList .flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Lattice */
+.lattice{
+  position: relative;
+}
+
+.lattice .arrow{
+  position: absolute;
+  transition: all .5s;
+}
+

@@ -18,6 +18,7 @@ function TagSidebar(props) {
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [checked, setChecked] = useState(false);
   const [nodeInfo, setNodeInfo] = useState();
+  const [dropItemKey, setDropItemKey] = useState("");
 
   const selectedTag = useSelector((state) => state.selectedTag);
   const { current } = useSelector((state) => state.step);
@@ -76,10 +77,24 @@ function TagSidebar(props) {
     const info = `指向节点${tagName}:{intents:[${step3Data.levelData[tagName].intents}] ,extents:[${step3Data.levelData[tagName].files}]}`;
     setNodeInfo(info);
   }
+
   function handleNodeMouseout() {
     const info = "";
     setNodeInfo(info);
   }
+
+  function handleDrop(e) {
+    setDropItemKey("");
+    const tagName = e.currentTarget.dataset.key;
+    Array.prototype.forEach.call(e.dataTransfer.files, (file) => {
+      console.log(file);
+    });
+  }
+  function handleDrag(e) {
+    e.preventDefault();
+    e.type === "dragenter" && setDropItemKey(e.currentTarget.dataset.key);
+  }
+
   return (
     <div className="tagSidebar">
       <div className="text-center text-xl">
@@ -98,6 +113,9 @@ function TagSidebar(props) {
             onSelect={handleSelect}
             treeData={treeData}
             selectedFileTags={selectedFileTags}
+            handleDrop={handleDrop}
+            handleDrag={handleDrag}
+            dropItemKey={dropItemKey}
           />
           <Lattice
             handleNodeClick={handleNodeClick}

@@ -35,11 +35,14 @@ a {
 .solid {
   border: 0.1rem solid red;
 }
-.padding{
-  padding: .5rem;
+.padding {
+  padding: 0.5rem;
 }
 .full-width {
   width: 100%;
+}
+.inline-block{
+  display: inline-block;
 }
 
 /*App  */
@@ -82,30 +85,30 @@ a {
 }
 
 /* TagSidebar */
-.tagSidebar{
+.tagSidebar {
   height: 90%;
 }
 
 .tagSidebar .grid-container {
   display: grid;
   grid-template-areas: "view" "action";
-  grid-template-rows:1fr 2rem ;
+  grid-template-rows: 1fr 2rem;
   grid-template-columns: 100%;
   height: 100%;
 }
-.tagSidebar .carousel{
-  grid-area:view;
+.tagSidebar .carousel {
+  grid-area: view;
 }
 
 .tagSidebar .action {
-  grid-area:action;
+  grid-area: action;
   text-align: center;
 }
-.tagSidebar span{
-  margin: .1rem;
+.tagSidebar span {
+  margin: 0.1rem;
 }
 
-.tagSidebar .highlight{
+.tagSidebar .highlight {
   color: rgb(55, 145, 255);
   font-size: 110%;
   font-weight: bolder;
@@ -226,12 +229,21 @@ a {
 }
 
 /* Lattice */
-.lattice{
+.lattice {
   position: relative;
 }
 
-.lattice .arrow{
+.lattice .arrow {
   position: absolute;
-  transition: all .5s;
+  transition: all 0.5s;
 }
 
+/* TagsTree */
+
+.tagsTree .ant-tree-treenode,
+.tagsTree .ant-tree-node-content-wrapper {
+  width: 100%;
+}
+.tagsTree .ant-tree-node-content-wrapper {
+  border: 0.1rem solid #E6E6FA;
+}

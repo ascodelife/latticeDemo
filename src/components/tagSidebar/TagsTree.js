@@ -3,7 +3,15 @@ import { DownOutlined, TagOutlined } from "@ant-design/icons";
 import { Tree } from "antd";
 
 function TagsTree(props) {
-  const { selectedKeys, onSelect, treeData, selectedFileTags } = props;
+  const {
+    selectedKeys,
+    onSelect,
+    treeData,
+    selectedFileTags,
+    handleDrop,
+    handleDrag,
+    dropItemKey
+  } = props;
 
   const { TreeNode } = Tree;
 
@@ -13,17 +21,27 @@ function TagsTree(props) {
         <TreeNode
           key={item.key}
           title={
-            <span
-              className={`padding ${
-                selectedFileTags && selectedFileTags.includes(item.title)
-                  ? "solid"
-                  : ""
-              }`}
+            <div
+              className={`${
+                item.key === dropItemKey ? "solid" : ""
+              } full-width inline-block`}
+              data-key={item.key}
+              onDragEnter={handleDrag}
+              onDragOver={handleDrag}
+              onDrop={handleDrop}
             >
-              {item.title}
-            </span>
+              <TagOutlined />
+              <span
+                className={`padding ${
+                  selectedFileTags && selectedFileTags.includes(item.title)
+                    ? "solid"
+                    : ""
+                }`}
+              >
+                {item.title}
+              </span>
+            </div>
           }
-          icon={<TagOutlined />}
         >
           {item.children ? renderTreeNodes(item.children) : ""}
         </TreeNode>
@@ -31,7 +49,7 @@ function TagsTree(props) {
     });
   }
   return (
-    <div>
+    <div className="tagsTree">
       <Tree
         selectedKeys={selectedKeys}
         defaultExpandAll

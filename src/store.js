@@ -1,19 +1,31 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import Cookie from "js-cookie";
-import { stepReducer } from "./reducers/controllerReducers";
-import { selectedTagReducer } from "./reducers/tagReducers";
-import { selectedFileReducer } from "./reducers/fileReducers";
+import { selectedReducer } from "./reducers/selectedReducer";
+import { metaDataReducer } from "./reducers/metaDataReducers";
+import { contextmenuReducer } from "./reducers/contextmenuReducers";
 
-const current = Cookie.getJSON("current") || 0;
-const selectedTag = Cookie.getJSON("selectedTag") || null;
-const selectedFile = Cookie.getJSON("selectedFile") || null;
 
-const initialState = { step: { current }, selectedTag, selectedFile };
+const metaData = window.ipcRenderer.sendSync('getMetaData') || {
+  tags: {},
+  files: {},
+  error: {},
+};
+
+// const metaData ={
+//   tags: {},
+//   files: {},
+//   error: {},
+// };
+
+const initialState = {
+  selected: { tag: "", file: "" },
+  contextmenu: { x: -1, y: -1, target: null, show: false },
+  metaData: { ...metaData, apiState: "" },
+};
 const reducer = combineReducers({
-  step: stepReducer,
-  selectedTag: selectedTagReducer,
-  selectedFile: selectedFileReducer,
+  selected: selectedReducer,
+  metaData: metaDataReducer,
+  contextmenu: contextmenuReducer,
 });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

@@ -1,8 +1,9 @@
 {
   "name": "tags-demo",
+  "proxy": "http://127.0.0.1:5000",
   "version": "0.1.0",
   "homepage": "./",
-  "main": "./main.js",
+  "main": "./src//main.js",
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
@@ -10,9 +11,16 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "antd": "^4.2.4",
+    "axios": "^0.19.2",
+    "electron-localstorage": "^1.0.5",
+    "electron-store": "^5.1.1",
+    "immutability-helper": "^3.0.2",
     "js-cookie": "^2.2.1",
+    "js-yaml": "^3.14.0",
     "konva": "^6.0.0",
     "react": "^16.13.1",
+    "react-contexify": "^4.1.1",
+    "react-contextmenu": "^2.13.0",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
@@ -21,8 +29,8 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "electron-start":"electron .",
-    "dev":"npm run start | npm run electron-start",
+    "electron-start": "electron .",
+    "dev": "npm run start | npm run electron-start",
     "start": "set BROWSER=none&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -47,6 +55,7 @@
   },
   "devDependencies": {
     "electron": "^9.0.0",
+    "electron-devtools-installer": "^3.0.0",
     "gh-pages": "^2.2.0"
   }
 }

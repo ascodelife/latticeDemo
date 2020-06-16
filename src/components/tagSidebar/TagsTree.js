@@ -1,6 +1,9 @@
 import React from "react";
 import { DownOutlined, TagOutlined } from "@ant-design/icons";
 import { Tree } from "antd";
+import { useDispatch } from "react-redux";
+import { showContextmenu } from "../../actions/contextmenuActions";
+import { TREE_NODE_TARGET } from "../../constants/contextmenuConstants";
 
 function TagsTree(props) {
   const {
@@ -10,22 +13,38 @@ function TagsTree(props) {
     selectedFileTags,
     handleDrop,
     handleDrag,
-    dropItemKey
+    dropItemKey,
   } = props;
+
+  const dispatch = useDispatch();
 
   const { TreeNode } = Tree;
 
-  function renderTreeNodes(treeData) {
-    return treeData.map((item) => {
+  function handleRightClick({ event, node }) {
+    event.stopPropagation();
+    dispatch(
+      showContextmenu(
+        event.pageX,
+        event.pageY,
+        TREE_NODE_TARGET,
+        treeData[node.key]
+      )
+    );
+  }
+
+  function renderTreeNodes(data) {
+    // console.log(data);
+    return data.map((tagName, index) => {
       return (
         <TreeNode
-          key={item.key}
+          key={tagName}
           title={
             <div
+              tabIndex={index}
               className={`${
-                item.key === dropItemKey ? "solid" : ""
+                tagName === dropItemKey ? "solid" : ""
               } full-width inline-block`}
-              data-key={item.key}
+              data-key={tagName}
               onDragEnter={handleDrag}
               onDragOver={handleDrag}
               onDrop={handleDrop}
@@ -33,17 +52,18 @@ function TagsTree(props) {
               <TagOutlined />
               <span
                 className={`padding ${
-                  selectedFileTags && selectedFileTags.includes(item.title)
+                  selectedFileTags && selectedFileTags.includes(tagName)
                     ? "solid"
                     : ""
                 }`}
               >
-                {item.title}
+                {tagName}
               </span>
             </div>
           }
         >
-          {item.children ? renderTreeNodes(item.children) : ""}
+          {treeData[tagName].children.length &&
+            renderTreeNodes(treeData[tagName].children.filter(childTagName=>!treeData[childTagName].lattice))}
         </TreeNode>
       );
     });
@@ -56,8 +76,11 @@ function TagsTree(props) {
         showIcon
         switcherIcon={<DownOutlined />}
         onSelect={onSelect}
+        onRightClick={handleRightClick}
       >
-        {renderTreeNodes(treeData)}
+        {renderTreeNodes(
+          Object.keys(treeData).filter((tag) => !treeData[tag].parents.length)
+        )}
       </Tree>
     </div>
   );

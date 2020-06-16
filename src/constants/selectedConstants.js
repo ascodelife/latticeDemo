@@ -1,1 +1,2 @@
 export const SET_SELECT_FILE = "SET_SELECT_FILE";
+export const SET_SELECT_TAG = "SET_SELECT_TAG";

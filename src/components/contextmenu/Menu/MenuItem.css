@@ -1,0 +1,15 @@
+.menu-item {
+  cursor: pointer;
+  border-bottom: 0.1rem solid #dddddd;
+  padding: .5rem 1rem;
+  
+}
+
+.menu-item:hover {
+  background-color: rgb(191, 231, 255);
+}
+
+.disabled{
+    cursor: not-allowed;
+    color:#dddddd;
+}

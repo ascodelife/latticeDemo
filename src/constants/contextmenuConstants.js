@@ -11,3 +11,8 @@ export const ADD_FILE = "添加文件";
 export const REMOVE_FILE = "删除文件";
 export const OPEN_FILE = "打开文件";
 export const EDIT_TAG = "编辑标签";
+
+export const VIEW = "查看>";
+export const VIEW_TILE = "平铺";
+export const VIEW_LIST = "列表";
+export const VIEW_GROUP = "分组";

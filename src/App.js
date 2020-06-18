@@ -65,7 +65,7 @@ function App() {
   function handleContextMenu(e) {
     //全局菜单
     e.preventDefault();
-    dispatch(showContextmenu(e.pageX, e.pageY, [GLOBAL_TARGET]));
+    dispatch(showContextmenu(e.pageX, e.pageY, GLOBAL_TARGET));
   }
 
   return (

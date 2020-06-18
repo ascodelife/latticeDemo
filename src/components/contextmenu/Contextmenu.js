@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Menu, Modal } from "antd";
+import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addTag,
@@ -9,12 +9,19 @@ import {
 } from "../../actions/metaDataActions";
 import { REQUEST, SUCCESS, FAIL } from "../../constants/apiConstants";
 import { hideContextmenu } from "../../actions/contextmenuActions";
+import { setFileView } from "../../actions/viewActions";
 import {
+  GLOBAL_TARGET,
   TREE_NODE_TARGET,
   REMOVE_FILE,
+  VIEW,
+  VIEW_TILE,
+  VIEW_LIST,
+  VIEW_GROUP,
 } from "../../constants/contextmenuConstants";
 import menuData from "../../data/menuData";
 import { openDialog } from "../../utils/openDialog";
+import Menu from "./Menu/Menu";
 import TagList from "./TagList";
 import {
   ADD_TAG,
@@ -36,6 +43,7 @@ function Contextmenu(props) {
   const [treeTags, setTreeTags] = useState({});
 
   const { tags, apiState, error } = useSelector((state) => state.metaData);
+  const { fileView } = useSelector((state) => state.view);
 
   const inputRef = useRef();
 
@@ -66,9 +74,28 @@ function Contextmenu(props) {
     return () => {};
   }, [tags]);
 
-  function handleClick(e) {
-    setKey(e.key);
-    switch (e.key) {
+  //切换查看子菜单勾选
+  useEffect(() => {
+    if (props.target === GLOBAL_TARGET) {
+      menuData[props.target] = menuData[props.target].map((item) => {
+        if (item.name === VIEW) {
+          item.subItem = item.subItem.map((subItem) => {
+            if (subItem.name === fileView) {
+              return { ...subItem, checked: true };
+            }
+            return { ...subItem, checked: false };
+          });
+        }
+        return item;
+      });
+      console.log(menuData[props.target]);
+    }
+    return () => {};
+  }, [fileView, props.target]);
+
+  function handleClick(key) {
+    setKey(key);
+    switch (key) {
       case ADD_TAG:
       case ADD_SUB_TAG:
       case REMOVE_TAG:
@@ -85,6 +112,11 @@ function Contextmenu(props) {
           }
           setVisible(true);
         }
+        break;
+      case VIEW_TILE:
+      case VIEW_LIST:
+      case VIEW_GROUP:
+        dispatch(setFileView(key));
         break;
       default:
     }
@@ -142,13 +174,11 @@ function Contextmenu(props) {
 
   return (
     <>
-      <Menu onClick={handleClick} style={props.style} mode="vertical">
-        {menuData[props.target].map((item) => (
-          <Menu.Item key={item.name} disabled={item.disabel}>
-            {item.name}
-          </Menu.Item>
-        ))}
-      </Menu>
+      <Menu
+        menuData={menuData[props.target]}
+        onClick={handleClick}
+        style={props.style}
+      />
       <Modal
         // title={menuData[props.target][key]}
         visible={visible}

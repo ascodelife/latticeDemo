@@ -20,6 +20,24 @@ const getMetaData = () => {
 };
 
 /**
+ * @description: 设置fileView
+ * @param {type} fileView
+ * @return:
+ */
+const setFileView = (fileView) => {
+  store.set("fileView", fileView);
+};
+
+/**
+ * @description: 获取fileView
+ * @param {type}
+ * @return:
+ */
+const getFileView = () => {
+  return store.get("fileView");
+};
+
+/**
  * @description: 清空配置信息
  * @param {type}
  * @return:
@@ -31,5 +49,7 @@ const clear = () => {
 module.exports = {
   setMetaData,
   getMetaData,
+  setFileView,
+  getFileView,
   clear,
 };

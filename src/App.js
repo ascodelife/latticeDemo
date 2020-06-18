@@ -14,23 +14,29 @@ import { clear } from "./actions/metaDataActions";
 import { successMsg, errorMsg } from "./utils/message";
 
 function App() {
-  const [treeNodeCmStyle, setTreeNodeCmStyle] = useState({ display: "none" });
+  const [contextStyle, setContextStyle] = useState({ display: "none" });
   const [visible, setiVisible] = useState(false);
 
   const contextmenuState = useSelector((state) => state.contextmenu);
   const { apiState, error } = useSelector((state) => state.metaData);
 
   const dispatch = useDispatch();
+
+  //监听右键菜单状态变化
   useEffect(() => {
     if (contextmenuState.show) {
-      setTreeNodeCmStyle({
+      //判断菜单是否超出屏幕范围
+      
+
+      setContextStyle({
         position: "fixed",
         left: contextmenuState.x,
         top: contextmenuState.y,
       });
     } else {
-      setTreeNodeCmStyle({
-        display: "none",
+      setContextStyle({
+        position: "fixed",
+        visible: "false",
       });
     }
     return () => {
@@ -71,7 +77,7 @@ function App() {
   return (
     <BrowserRouter>
       <div
-        className="grid-container"
+        className="app-container"
         onClick={handleCilck}
         onContextMenu={handleContextMenu}
       >
@@ -97,7 +103,7 @@ function App() {
       </div>
       {contextmenuState.target && (
         <Contextmenu
-          style={treeNodeCmStyle}
+          style={contextStyle}
           data={contextmenuState.data}
           target={contextmenuState.target}
         />

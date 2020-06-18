@@ -44,6 +44,7 @@ function TagsTree(props) {
               className={`${
                 tagName === dropItemKey ? "solid" : ""
               } full-width inline-block`}
+              style={{ whiteSpace: "nowrap" }}
               data-key={tagName}
               onDragEnter={handleDrag}
               onDragOver={handleDrag}
@@ -63,7 +64,11 @@ function TagsTree(props) {
           }
         >
           {treeData[tagName].children.length &&
-            renderTreeNodes(treeData[tagName].children.filter(childTagName=>!treeData[childTagName].lattice))}
+            renderTreeNodes(
+              treeData[tagName].children.filter(
+                (childTagName) => !treeData[childTagName].lattice
+              )
+            )}
         </TreeNode>
       );
     });

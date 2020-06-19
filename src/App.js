@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
@@ -14,35 +14,14 @@ import { clear } from "./actions/metaDataActions";
 import { successMsg, errorMsg } from "./utils/message";
 
 function App() {
-  const [contextStyle, setContextStyle] = useState({ display: "none" });
   const [visible, setiVisible] = useState(false);
 
   const contextmenuState = useSelector((state) => state.contextmenu);
   const { apiState, error } = useSelector((state) => state.metaData);
 
+  const appRef = useRef();
+
   const dispatch = useDispatch();
-
-  //监听右键菜单状态变化
-  useEffect(() => {
-    if (contextmenuState.show) {
-      //判断菜单是否超出屏幕范围
-      
-
-      setContextStyle({
-        position: "fixed",
-        left: contextmenuState.x,
-        top: contextmenuState.y,
-      });
-    } else {
-      setContextStyle({
-        position: "fixed",
-        visible: "false",
-      });
-    }
-    return () => {
-      //
-    };
-  }, [contextmenuState]);
 
   useEffect(() => {
     if (apiState === REQUEST) {
@@ -77,6 +56,7 @@ function App() {
   return (
     <BrowserRouter>
       <div
+        ref={appRef}
         className="app-container"
         onClick={handleCilck}
         onContextMenu={handleContextMenu}
@@ -103,7 +83,13 @@ function App() {
       </div>
       {contextmenuState.target && (
         <Contextmenu
-          style={contextStyle}
+          show={contextmenuState.show}
+          pos={{
+            x: contextmenuState.x,
+            y: contextmenuState.y,
+            width: appRef.current.clientWidth,
+            height: appRef.current.clientHeight,
+          }}
           data={contextmenuState.data}
           target={contextmenuState.target}
         />

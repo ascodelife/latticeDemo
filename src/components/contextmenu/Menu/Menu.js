@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Popup from "reactjs-popup";
 import "./Menu.css";
 import MenuItem from "./MenuItem";
 
 function Menu(props) {
-  const { menuData, style, onClick: handleClick } = props;
+  const { menuData, onClick: handleClick, pos } = props;
+
+  const [menuPos, setMenuPos] = useState({ x: -1, y: -1 });
+
+  const menuRef = useRef();
+
+  useEffect(() => {
+    if (menuRef.current) {
+      const { clientHeight, clientWidth } = menuRef.current;
+      console.log(pos, clientHeight, clientWidth);
+      const newMenuPos = { x: pos.x, y: pos.y };
+      //检测Y是否越界
+      if (pos.y + clientHeight >= pos.height) {
+        //菜单向上移动
+        newMenuPos.y = pos.y - clientHeight;
+      }
+      //检测X是否越界
+      if (pos.x + clientWidth >= pos.width) {
+        //菜单向左移动
+        newMenuPos.x = pos.x - clientWidth;
+      }
+      setMenuPos(newMenuPos);
+    }
+    return () => {};
+  }, [pos]);
+
   return (
-    <div className="menu" style={style}>
+    <div
+      ref={menuRef}
+      className="menu"
+      style={{ position: "fixed", left: menuPos.x, top: menuPos.y }}
+    >
       {menuData.map((item) =>
         item.subItem && item.subItem.length ? (
           <Popup

@@ -31,6 +31,8 @@ import {
 } from "../../constants/contextmenuConstants";
 
 function Contextmenu(props) {
+  const { pos, data, target, show } = props;
+
   const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
@@ -47,6 +49,7 @@ function Contextmenu(props) {
 
   const inputRef = useRef();
 
+  //异步请求结果
   useEffect(() => {
     if (apiState === REQUEST) {
       setConfirmLoading(true);
@@ -76,8 +79,8 @@ function Contextmenu(props) {
 
   //切换查看子菜单勾选
   useEffect(() => {
-    if (props.target === GLOBAL_TARGET) {
-      menuData[props.target] = menuData[props.target].map((item) => {
+    if (target === GLOBAL_TARGET) {
+      menuData[target] = menuData[target].map((item) => {
         if (item.name === VIEW) {
           item.subItem = item.subItem.map((subItem) => {
             if (subItem.name === fileView) {
@@ -88,10 +91,9 @@ function Contextmenu(props) {
         }
         return item;
       });
-      console.log(menuData[props.target]);
     }
     return () => {};
-  }, [fileView, props.target]);
+  }, [fileView, target]);
 
   function handleClick(key) {
     setKey(key);
@@ -107,8 +109,8 @@ function Contextmenu(props) {
         if (files && files.length) {
           setSelectFiles(files);
           //默认选中标签为当前树标签
-          if (props.target === TREE_NODE_TARGET) {
-            setSelectedTags([props.data.name]);
+          if (target === TREE_NODE_TARGET) {
+            setSelectedTags([data.name]);
           }
           setVisible(true);
         }
@@ -139,20 +141,20 @@ function Contextmenu(props) {
     setConfirmLoading(true);
     switch (key) {
       case ADD_TAG:
-        dispatch(addTag(formatValue, props.data.parents));
+        dispatch(addTag(formatValue, data.parents));
         break;
       case ADD_SUB_TAG:
-        dispatch(addTag(formatValue, [props.data.name]));
+        dispatch(addTag(formatValue, [data.name]));
         break;
       case REMOVE_TAG:
-        dispatch(removeTag(props.data.name));
+        dispatch(removeTag(data.name));
         break;
       case ADD_FILE:
         dispatch(addFiles(selectFiles, selectedTags));
         break;
       case REMOVE_FILE:
-        console.log(props.data);
-        dispatch(removeFile(props.data.name));
+        // console.log(data);
+        dispatch(removeFile(data.name));
         break;
       default:
     }
@@ -174,13 +176,17 @@ function Contextmenu(props) {
 
   return (
     <>
-      <Menu
-        menuData={menuData[props.target]}
-        onClick={handleClick}
-        style={props.style}
-      />
+      {show && (
+        <Menu
+          pos={pos}
+          menuData={menuData[target]}
+          onClick={handleClick}
+          style={props.style}
+        />
+      )}
+
       <Modal
-        // title={menuData[props.target][key]}
+        // title={menuData[target][key]}
         visible={visible}
         onOk={handleOk}
         confirmLoading={confirmLoading}

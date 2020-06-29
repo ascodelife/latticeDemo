@@ -40,7 +40,24 @@ const addFiles = (addFilePaths, addFlieTags) => async (dispatch, getState) => {
     const state = getState().metaData;
     const addFileNames = addFilePaths.map((filePath) => getFileName(filePath));
     const addFileState = JSON.parse(JSON.stringify(state));
-    //文件标签的所有祖先标签和其自身
+    //2.1先删除重复的文件
+    const duplicateFilePaths = addFilePaths.filter(
+      (filePath) => state.files[filePath]
+    );
+    // console.log(duplicateFilePaths);
+    duplicateFilePaths.forEach((filePath) => {
+      const fileTags = state.files[filePath].tags;
+      //删除文件属性
+      delete addFileState.files[filePath];
+      //更新标签文件
+      fileTags.forEach((tag) => {
+        addFileState.tags[tag].files = addFileState.tags[tag].files.filter(
+          (file) => file !== filePath
+        );
+      });
+    });
+
+    //2.2文件标签的所有祖先标签和其自身
     let addFilesTagsAll = [...addFlieTags];
     addFlieTags.forEach((tag) => {
       addFilesTagsAll = [...addFilesTagsAll, ...getAncestors(state, tag)];
@@ -55,7 +72,7 @@ const addFiles = (addFilePaths, addFlieTags) => async (dispatch, getState) => {
         addFileState.tags[tagName].files
       );
     });
-    //增加文件属性(或覆盖)
+    //2.3增加文件属性(或覆盖)
     addFilePaths.forEach((filepath, index) => {
       addFileState.files[filepath] = {
         name: addFileNames[index],
@@ -63,8 +80,14 @@ const addFiles = (addFilePaths, addFlieTags) => async (dispatch, getState) => {
         tags: addFilesTagsAll,
       };
     });
+    // console.log(state);
+    // console.log(addFileState);
     //3.API
-    const apiData = await addFilesApi(addFilePaths, addFilesTagsAll);
+    const apiData = await addFilesApi(
+      addFilePaths,
+      addFilesTagsAll,
+      duplicateFilePaths
+    );
     console.log(apiData);
     addFileState.tags = { ...apiData };
     //4.请求成功
@@ -195,7 +218,7 @@ const removeTag = (removeTagName) => async (dispatch, getState) => {
     //更新父标签
     const parents = state.tags[removeTagName].parents;
     parents.forEach((parent) => {
-      removeTagState.tags[parent].children = state.tags[parent].children.filter(  
+      removeTagState.tags[parent].children = state.tags[parent].children.filter(
         (child) => child !== removeTagName
       );
     });

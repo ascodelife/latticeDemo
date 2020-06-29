@@ -1,0 +1,15 @@
+.info {
+  font-size: 2rem;
+}
+.ul {
+  list-style: none;
+  padding: 0;
+}
+.ul li{
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.ul li:hover{
+  background-color: #61dafb;
+}

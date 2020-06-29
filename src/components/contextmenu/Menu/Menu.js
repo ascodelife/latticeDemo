@@ -6,14 +6,14 @@ import MenuItem from "./MenuItem";
 function Menu(props) {
   const { menuData, onClick: handleClick, pos } = props;
 
-  const [menuPos, setMenuPos] = useState({ x: -1, y: -1 });
+  const [menuPos, setMenuPos] = useState({ x: -1000, y: -1000 });
 
   const menuRef = useRef();
 
   useEffect(() => {
     if (menuRef.current) {
       const { clientHeight, clientWidth } = menuRef.current;
-      console.log(pos, clientHeight, clientWidth);
+      // console.log(pos, clientHeight, clientWidth);
       const newMenuPos = { x: pos.x, y: pos.y };
       //检测Y是否越界
       if (pos.y + clientHeight >= pos.height) {

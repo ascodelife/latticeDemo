@@ -6,10 +6,11 @@ import Axios from "axios";
 
 // const removeFile = async () => {};
 
-export const addFilesApi = async (files, tags) => {
+export const addFilesApi = async (files, tags, duplicateFiles) => {
   const sendData = {
     files,
     tags,
+    duplicateFiles,
   };
   const { data } = await Axios.post(`/api/lattice/addFiles`, sendData);
   return data;

@@ -14,6 +14,7 @@ import { clear } from "./actions/metaDataActions";
 import { successMsg, errorMsg } from "./utils/message";
 
 function App() {
+
   const [visible, setiVisible] = useState(false);
 
   const contextmenuState = useSelector((state) => state.contextmenu);
@@ -94,6 +95,7 @@ function App() {
           target={contextmenuState.target}
         />
       )}
+      
     </BrowserRouter>
   );
 }
